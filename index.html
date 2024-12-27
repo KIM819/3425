@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>席替えシステム</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>席替えシステム</h1>
+    </header>
+    <main>
+        <div class="container">
+            <div class="board">
+                <div class="whiteboard">ホワイトボード</div>
+                <div class="seats-container" id="seatsContainer"></div>
+            </div>
+           <div class="controls">
+    <label for="studentNumber">出席番号:</label>
+    <input type="number" id="studentNumber" value="1" min="1" max="39">
+    <button id="submitSeat">入力</button>
+    <button id="finalizeSeats">確定</button>
+    <button id="toggleView">表示/非表示</button>
+</div>
+
+            <div class="results">
+                <h2>結果</h2>
+                <div id="seatResults"></div>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
