@@ -1,128 +1,215 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-}
+document.addEventListener("DOMContentLoaded", () => {
+    const seatsContainer = document.getElementById("seatsContainer");
+    const studentNumberInput = document.getElementById("studentNumber");
+    const submitSeatButton = document.getElementById("submitSeat");
+    const finalizeSeatsButton = document.getElementById("finalizeSeats");
+    const toggleViewButton = document.getElementById("toggleView");
+    const seatResults = document.getElementById("seatResults");
 
-header {
-    text-align: center;
-    background-color: #333;
-    color: white;
-    padding: 10px 0;
-}
+    const seatMap = [
+        [1, 8, 15, 22, 29, "space"],
+        [2, 9, 16, 23, 30, 36],
+        [3, 10, 17, 24, 31, 37],
+        [4, 11, 18, 25, 32, 38],
+        [5, 12, 19, 26, 33, 39],
+        [6, 13, 20, 27, 34, "space"],
+        [7, 14, 21, 28, 35, "space"],
+    ];
 
-main {
-    padding: 20px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 20px;
-}
+    const pendingSeats = [];
+    const confirmedSeats = [];
+    const contestedSeats = [];
+    let selectedSeat = null;
+    let isSeatNumberView = true;
 
-.container {
-    display: flex;
-    gap: 20px;
-}
+    // Render seat layout
+    seatMap.forEach((row) => {
+        row.forEach((seatNumber) => {
+            if (seatNumber === "space") {
+                const spaceElement = document.createElement("div");
+                spaceElement.className = "space";
+                seatsContainer.appendChild(spaceElement);
+                return;
+            }
 
-.board {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* 左寄せ */
-    background-color: #fff;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+            const seatElement = document.createElement("div");
+            seatElement.className = "seat";
+            seatElement.textContent = seatNumber;
+            seatElement.dataset.seatNumber = seatNumber;
 
-.whiteboard {
-    background-color: #eee;
-    width: 95%;
-    text-align: center;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 1.2em;
-    border: 1px solid #ccc;
-}
+            // Add click functionality
+            seatElement.addEventListener("click", () => {
+                const isConfirmed = confirmedSeats.some(
+                    (s) => s.seatNumber === parseInt(seatElement.dataset.seatNumber)
+                );
 
-.seats-container {
-    display: grid;
-    grid-template-columns: repeat(6, 80px); /* 1つの座席の幅を増やす */
-    gap: 15px; /* 各座席間の間隔を増やす */
-    justify-content: flex-start; /* 左寄せ */
-    align-items: start;
-}
+                if (isConfirmed) {
+                    alert("この席は既に確定済みです。別の席を選んでください。");
+                    return;
+                }
 
-.seat {
-    background-color: #fff;
-    text-align: center;
-    line-height: 80px; /* 座席の高さに合わせて中央揃え */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 80px; /* 座席の横幅を増やす */
-    height: 80px; /* 座席の縦幅を増やす */
-    font-size: 18px; /* 座席番号のフォントサイズを大きくする */
-    transition: background-color 0.2s;
-}
+                if (selectedSeat) {
+                    selectedSeat.classList.remove("selected");
+                }
+                selectedSeat = seatElement;
+                selectedSeat.classList.add("selected");
+            });
 
-.seat:hover {
-    background-color: lightblue;
-}
+            seatsContainer.appendChild(seatElement);
+        });
+    });
 
-.seat.selected {
-    background-color: blue;
-    color: white;
-}
+    // Handle seat submission
+    submitSeatButton.addEventListener("click", () => {
+        const studentNumber = parseInt(studentNumberInput.value);
+        if (!selectedSeat) {
+            alert("席を選択してください！");
+            return;
+        }
+        if (isNaN(studentNumber) || studentNumber < 1 || studentNumber > 39) {
+            alert("正しい出席番号を入力してください！");
+            return;
+        }
 
-.seat.highlight {
-    background-color: red;
-    color: white;
-}
+        const seatNumber = parseInt(selectedSeat.dataset.seatNumber);
 
+        // Remove any previous pending seat for the same student number
+        const previousSeatIndex = pendingSeats.findIndex(
+            (s) => s.studentNumber === studentNumber
+        );
+        if (previousSeatIndex > -1) {
+            pendingSeats.splice(previousSeatIndex, 1);
+        }
 
-.results {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    background-color: #fff;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    min-width: 300px;
-}
+        // Remove from contestedSeats if it exists
+        contestedSeats.forEach((seat) => {
+            const index = seat.students.indexOf(studentNumber);
+            if (index > -1) {
+                seat.students.splice(index, 1);
+                if (seat.students.length === 1) {
+                    // Move back to pendingSeats if only one student remains
+                    pendingSeats.push({
+                        seatNumber: seat.seatNumber,
+                        studentNumber: seat.students[0],
+                    });
+                    contestedSeats.splice(contestedSeats.indexOf(seat), 1);
+                }
+            }
+        });
 
-button {
-    width: 300px; /* 横幅 */
-    height: 150px; /* 縦幅 */
-    font-size: 30px; /* テキストサイズ */
-    border-radius: 5px; /* ボタンの角を丸める（オプション） */
-    border: none; /* ボーダーを消す（オプション） */
-    background-color: #007bff; /* ボタンの背景色 */
-    color: white; /* テキストの色 */
-    cursor: pointer;
-    padding: 10px; /* 内側の余白 */
-}
+        // Check if seat is already pending or contested
+        const existingSeat = pendingSeats.find((s) => s.seatNumber === seatNumber);
+        const contestedSeat = contestedSeats.find((s) => s.seatNumber === seatNumber);
 
-button:hover {
-    background-color: #0056b3; /* ホバー時の背景色 */
-}
+        if (existingSeat) {
+            if (contestedSeat) {
+                contestedSeat.students.push(studentNumber);
+            } else {
+                contestedSeats.push({
+                    seatNumber,
+                    students: [existingSeat.studentNumber, studentNumber],
+                });
+                pendingSeats.splice(pendingSeats.indexOf(existingSeat), 1);
+            }
+        } else if (contestedSeat) {
+            contestedSeat.students.push(studentNumber);
+        } else {
+            pendingSeats.push({ seatNumber, studentNumber });
+        }
 
-#seatResults {
-    width: 100%;
-    margin-top: 10px;
-}
-#studentNumber {
-    width: 100px; /* 横幅 */
-    height: 40px; /* 縦幅 */
-    font-size: 30px; /* テキストサイズ */
-    padding: 5px; /* 内側の余白 */
-}
-.controls {
-    display: flex;
-    flex-direction: column; /* 子要素を縦に並べる */
-    align-items: center; /* 中央揃え（オプション） */
-    gap: 10px; /* 各要素間の間隔 */
-    margin-top: 20px; /* 周囲の余白 */
-}
+        selectedSeat.classList.remove("selected");
+        selectedSeat = null;
+    });
+
+    // Finalize seat allocations
+    finalizeSeatsButton.addEventListener("click", () => {
+        seatResults.innerHTML = "";
+
+        // Confirm pending seats that are not contested
+        pendingSeats.forEach(({ seatNumber, studentNumber }) => {
+            confirmedSeats.push({ seatNumber, studentNumber });
+        });
+
+        // Clear pending seats
+        pendingSeats.length = 0;
+
+        updateSeatResults();
+    });
+
+    // Update seat results
+    function updateSeatResults() {
+        seatResults.innerHTML = "<h3>重複している席:</h3>";
+
+        // Add contested seats first
+        contestedSeats.forEach(({ seatNumber, students }) => {
+            seatResults.innerHTML += `席番号${seatNumber}番は出席番号${students.join("番、")}番が重複しています。<button onclick="resolveConflict(${seatNumber})">解決</button><br>`;
+        });
+
+        seatResults.innerHTML += "<h3>確定した席:</h3>";
+
+        // Add confirmed seats
+        confirmedSeats.forEach(({ seatNumber, studentNumber }) => {
+            seatResults.innerHTML += `席番号${seatNumber}番は出席番号${studentNumber}番で確定しました。<br>`;
+        });
+
+        updateSeatView();
+    }
+
+    // Resolve conflict
+    window.resolveConflict = (seatNumber) => {
+        const conflictIndex = contestedSeats.findIndex(
+            (s) => s.seatNumber === seatNumber
+        );
+        if (conflictIndex > -1) {
+            const resolvedSeat = contestedSeats[conflictIndex];
+            const studentNumber = prompt(
+                `席番号${seatNumber}番をどの出席番号で確定しますか？ (${resolvedSeat.students.join(", ")})`
+            );
+            if (
+                studentNumber &&
+                resolvedSeat.students.includes(parseInt(studentNumber))
+            ) {
+                // Confirm seat
+                confirmedSeats.push({
+                    seatNumber,
+                    studentNumber: parseInt(studentNumber),
+                });
+
+                // Remove from contestedSeats
+                contestedSeats.splice(conflictIndex, 1);
+
+                updateSeatResults();
+                updateSeatView(); // Ensure seat view updates after resolving conflict
+            } else {
+                alert("正しい出席番号を入力してください！");
+            }
+        } else {
+            alert("この席はすでに解決済みです。");
+        }
+    };
+
+    // Toggle seat view
+    toggleViewButton.addEventListener("click", () => {
+        isSeatNumberView = !isSeatNumberView;
+        updateSeatView();
+    });
+
+    // Update seat view
+    function updateSeatView() {
+        seatsContainer.querySelectorAll(".seat").forEach((seatElement) => {
+            const seatNumber = parseInt(seatElement.dataset.seatNumber);
+            const confirmedSeat = confirmedSeats.find(
+                (s) => s.seatNumber === seatNumber
+            );
+            if (confirmedSeat) {
+                if (isSeatNumberView) {
+                    seatElement.textContent = seatNumber;
+                    seatElement.classList.remove("highlight");
+                } else {
+                    seatElement.textContent = confirmedSeat.studentNumber;
+                    seatElement.classList.add("highlight");
+                }
+            }
+        });
+    }
+});
