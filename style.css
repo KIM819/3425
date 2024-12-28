@@ -62,7 +62,7 @@ main {
     cursor: pointer;
     width: 80px; /* 座席の横幅を増やす */
     height: 80px; /* 座席の縦幅を増やす */
-    font-size: 18px; /* 座席番号のフォントサイズを大きくする */
+    font-size: 40px; /* 座席番号のフォントサイズを大きくする */
     transition: background-color 0.2s;
 }
 
