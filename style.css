@@ -94,8 +94,8 @@ main {
 }
 
 button {
-    width: 300px; /* 横幅 */
-    height: 150px; /* 縦幅 */
+    width: 150px; /* 横幅 */
+    height: 75px; /* 縦幅 */
     font-size: 30px; /* テキストサイズ */
     border-radius: 5px; /* ボタンの角を丸める（オプション） */
     border: none; /* ボーダーを消す（オプション） */
