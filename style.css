@@ -11,12 +11,6 @@ header {
     color: white;
     padding: 10px 0;
 }
-.button-container {
-    display: flex;
-    flex-direction: column; /* 子要素を縦に並べる */
-    gap: 10px; /* ボタン間の間隔 */
-    align-items: center; /* ボタンを中央揃え */
-}
 main {
     padding: 20px;
     display: flex;
