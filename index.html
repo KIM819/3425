@@ -16,16 +16,10 @@
                 <div class="whiteboard">ホワイトボード</div>
                 <div class="seats-container" id="seatsContainer"></div>
             </div>
-     
-               <div class="controls">
+           <div class="controls">
     <label for="studentNumber">出席番号:</label>
-    <select id="studentNumber">
-        <!-- 出席番号 1～39 を自動生成 -->
-    </select>
+    <input type="number" id="studentNumber" value="1" min="1" max="39">
     <button id="submitSeat">入力</button>
-</div>
-
-  
     <button id="finalizeSeats">確定</button>
     <button id="toggleView">表示/非表示</button>
 </div>
