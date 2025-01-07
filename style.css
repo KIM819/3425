@@ -126,4 +126,14 @@ button:hover {
     gap: 10px; /* 各要素間の間隔 */
     margin-top: 20px; /* 周囲の余白 */
 }
+#studentNumber {
+    width: 150px; /* プルダウンの幅 */
+    height: 40px; /* 高さ */
+    font-size: 16px; /* テキストサイズ */
+    padding: 5px; /* 内側の余白 */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+}
 
