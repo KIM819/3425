@@ -22,36 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let selectedSeat = null;
     let isSeatNumberView = true;
 
-
-// プルダウンに出席番号を追加
-function populateStudentNumbers() {
-    // プルダウンをクリア（重複防止）
-    studentNumberSelect.innerHTML = "";
-
-    // 出席番号を1から39まで生成
-    for (let i = 1; i <= 39; i++) {
-        const option = document.createElement("option");
-        option.value = i; // 実際の値
-        option.textContent = `出席番号 ${i}`; // 表示されるテキスト
-        studentNumberSelect.appendChild(option);
-    }
-}
-
-// 初期化時にプルダウンを作成
-populateStudentNumbers();
-
-// 入力ボタンのクリックイベント
-submitSeatButton.addEventListener("click", () => {
-    const studentNumber = parseInt(studentNumberSelect.value, 10);
-    if (isNaN(studentNumber)) {
-        alert("出席番号を選択してください！");
-        return;
-    }
-
-    // 選択した出席番号をコンソールに表示（必要に応じて他の処理を追加）
-    console.log(`出席番号 ${studentNumber} が選択されました。`);
-});
-
     // Render seat layout
     seatMap.forEach((row) => {
         row.forEach((seatNumber) => {
@@ -68,19 +38,12 @@ submitSeatButton.addEventListener("click", () => {
             seatElement.dataset.seatNumber = seatNumber;
 const studentNumberSelect = document.getElementById("studentNumber");
 
-const studentNumberSelect = document.getElementById("studentNumber");
-const submitSeatButton = document.getElementById("submitSeat");
-
 // プルダウンに出席番号を追加
 function populateStudentNumbers() {
-    // プルダウンをクリア（重複防止）
-    studentNumberSelect.innerHTML = "";
-
-    // 出席番号を1から39まで生成
-    for (let i = 1; i <= 39; i++) {
+  for (let i = 1; i <= 39; i++) {
         const option = document.createElement("option");
-        option.value = i; // 実際の値
-        option.textContent = `出席番号 ${i}`; // 表示されるテキスト
+        option.value = i;
+        option.textContent = `出席番号 ${i}`;
         studentNumberSelect.appendChild(option);
     }
 }
@@ -90,14 +53,15 @@ populateStudentNumbers();
 
 // 入力ボタンのクリックイベント
 submitSeatButton.addEventListener("click", () => {
-    const studentNumber = parseInt(studentNumberSelect.value, 10);
-    if (isNaN(studentNumber)) {
-        alert("出席番号を選択してください！");
+    const studentNumber = parseInt(studentNumberSelect.value);
+    if (!selectedSeat) {
+        alert("席を選択してください！");
         return;
     }
+    const seatNumber = parseInt(selectedSeat.dataset.seatNumber);
 
-    // 選択した出席番号をコンソールに表示（必要に応じて他の処理を追加）
-    console.log(`出席番号 ${studentNumber} が選択されました。`);
+    // 入力済みリストの更新やサーバー送信処理をここで実行
+    console.log(`出席番号 ${studentNumber} が席番号 ${seatNumber} を選択しました。`);
 });
 
             // Add click functionality
