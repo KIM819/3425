@@ -48,7 +48,7 @@ main {
 .seats-container {
     display: grid;
     grid-template-columns: repeat(6, 80px); /* 1つの座席の幅を増やす */
-    gap: 15px; /* 各座席間の間隔を増やす */
+    gap: 5px; /* 各座席間の間隔を増やす */
     justify-content: flex-start; /* 左寄せ */
     align-items: start;
 }
@@ -56,12 +56,12 @@ main {
 .seat {
     background-color: #fff;
     text-align: center;
-    line-height: 80px; /* 座席の高さに合わせて中央揃え */
+    line-height: 60px; /* 座席の高さに合わせて中央揃え */
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
-    width: 80px; /* 座席の横幅を増やす */
-    height: 80px; /* 座席の縦幅を増やす */
+    width: 60px; /* 座席の横幅を増やす */
+    height: 60px; /* 座席の縦幅を増やす */
     font-size: 40px; /* 座席番号のフォントサイズを大きくする */
     transition: background-color 0.2s;
 }
@@ -127,12 +127,17 @@ button:hover {
     margin-top: 20px; /* 周囲の余白 */
 }
 #studentNumber {
-    width: 150px;
-    height: 40px;
-    font-size: 16px;
-    padding: 5px;
+    width: 150px; /* プルダウンの幅 */
+    height: 40px; /* 高さ */
+    font-size: 16px; /* テキストサイズ */
+    padding: 5px; /* 内側の余白 */
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #fff;
     cursor: pointer;
+}
+.seat.highlight {
+    background-color: red;
+    color: white;
+    font-weight: bold;
 }
