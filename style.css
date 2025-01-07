@@ -127,10 +127,10 @@ button:hover {
     margin-top: 20px; /* 周囲の余白 */
 }
 #studentNumber {
-    width: 150px; /* プルダウンの幅 */
-    height: 40px; /* 高さ */
-    font-size: 16px; /* テキストサイズ */
-    padding: 5px; /* 内側の余白 */
+    width: 150px;
+    height: 40px;
+    font-size: 16px;
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #fff;
