@@ -36,6 +36,33 @@ document.addEventListener("DOMContentLoaded", () => {
             seatElement.className = "seat";
             seatElement.textContent = seatNumber;
             seatElement.dataset.seatNumber = seatNumber;
+const studentNumberSelect = document.getElementById("studentNumber");
+
+// プルダウンに出席番号を追加
+function populateStudentNumbers() {
+    for (let i = 1; i <= 39; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = `出席番号 ${i}`;
+        studentNumberSelect.appendChild(option);
+    }
+}
+
+// 初期化時にプルダウンを作成
+populateStudentNumbers();
+
+// 入力ボタンのクリックイベント
+submitSeatButton.addEventListener("click", () => {
+    const studentNumber = parseInt(studentNumberSelect.value);
+    if (!selectedSeat) {
+        alert("席を選択してください！");
+        return;
+    }
+    const seatNumber = parseInt(selectedSeat.dataset.seatNumber);
+
+    // 入力済みリストの更新やサーバー送信処理をここで実行
+    console.log(`出席番号 ${studentNumber} が席番号 ${seatNumber} を選択しました。`);
+});
 
             // Add click functionality
             seatElement.addEventListener("click", () => {
