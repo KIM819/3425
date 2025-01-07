@@ -23,7 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let isSeatNumberView = true;
 const studentNumberSelect = document.getElementById("studentNumber");
 
-// プルダウンに出席番号を動的に追加
+
+
+// プルダウンに出席番号を動的追加
 function populateStudentNumbers() {
     for (let i = 1; i <= 39; i++) {
         const option = document.createElement("option");
