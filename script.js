@@ -40,7 +40,7 @@ const studentNumberSelect = document.getElementById("studentNumber");
 
 // プルダウンに出席番号を追加
 function populateStudentNumbers() {
-    for (let i = 1; i <= 39; i++) {
+  for (let i = 1; i <= 39; i++) {
         const option = document.createElement("option");
         option.value = i;
         option.textContent = `出席番号 ${i}`;
