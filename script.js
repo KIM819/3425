@@ -21,6 +21,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const contestedSeats = [];
     let selectedSeat = null;
     let isSeatNumberView = true;
+const studentNumberSelect = document.getElementById("studentNumber");
+
+// プルダウンに出席番号を動的に追加
+function populateStudentNumbers() {
+    for (let i = 1; i <= 39; i++) {
+        const option = document.createElement("option");
+        option.value = i; // 値（バリュー）
+        option.textContent = `出席番号 ${i}`; // 表示されるテキスト
+        studentNumberSelect.appendChild(option);
+    }
+}
+
+// 初期化時にプルダウンを作成
+populateStudentNumbers();
 
     // Render seat layout
     seatMap.forEach((row) => {
